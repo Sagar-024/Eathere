@@ -1,4 +1,3 @@
-
 import { Schema, model } from 'mongoose'
 
 const foodSpotSchema = new Schema(
@@ -17,8 +16,15 @@ const foodSpotSchema = new Schema(
       default: '',
     },
     coordinates: {
-      lat: Number,
-      lng: Number,
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+      },
+      coordinates: {
+        type: [Number], 
+        required: true,
+      },
     },
     type: {
       type: String,
@@ -32,5 +38,8 @@ const foodSpotSchema = new Schema(
   },
   { timestamps: true }
 )
+
+
+foodSpotSchema.index({ coordinates: '2dsphere' })
 
 export default model('FoodSpot', foodSpotSchema)
